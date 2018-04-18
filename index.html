@@ -1,0 +1,176 @@
+<html>
+
+<head>
+    <style>
+        body {
+          font-family: Avenir;
+        }
+  @font-face {
+                font-family: Avenir;
+                src: url(Avenir.otf);
+            }
+        .grid {
+            display: flex;
+            /* establish flex container */
+            flex-wrap: wrap;
+            /* enable flex items to wrap */
+            justify-content: space-around;
+            
+            align-content: center
+
+        }
+        
+        .label, .cell { 
+            text-align: center;
+        }
+
+        .cell {
+            flex: 0 0 25%;
+            /* don't grow, don't shrink, width */
+            margin-bottom: 5px;
+        }
+
+        .cell img {
+            width: 80%;
+        }
+
+        div .check {
+            width: 10%;
+
+        }
+
+        @keyframes tada {
+            0% {
+                -webkit-animation-timing-function: ease-in;
+                animation-timing-function: ease-in;
+                opacity: 0;
+                -webkit-transform: scale(1);
+                transform: scale(1);
+            }
+            38% {
+                -webkit-animation-timing-function: ease-out;
+                animation-timing-function: ease-out;
+                opacity: 1;
+                -webkit-transform: scale(1);
+                transform: scale(1);
+            }
+            55% {
+                -webkit-animation-timing-function: ease-in;
+                animation-timing-function: ease-in;
+                -webkit-transform: scale(1.5);
+                transform: scale(1.5);
+            }
+            72% {
+                -webkit-animation-timing-function: ease-out;
+                animation-timing-function: ease-out;
+                -webkit-transform: scale(1);
+                transform: scale(1);
+            }
+            81% {
+                -webkit-animation-timing-function: ease-in;
+                animation-timing-function: ease-in;
+                -webkit-transform: scale(1.24);
+                transform: scale(1.24);
+            }
+            89% {
+                -webkit-animation-timing-function: ease-out;
+                animation-timing-function: ease-out;
+                -webkit-transform: scale(1);
+                transform: scale(1);
+            }
+            95% {
+                -webkit-animation-timing-function: ease-in;
+                animation-timing-function: ease-in;
+                -webkit-transform: scale(1.04);
+                transform: scale(1.04);
+            }
+            100% {
+                -webkit-animation-timing-function: ease-out;
+                animation-timing-function: ease-out;
+                -webkit-transform: scale(1);
+                transform: scale(1);
+            }
+        }
+
+        .checked {
+            animation: tada 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1 alternate;
+
+        }
+
+        .hidden{
+            
+            opacity: 0;
+            
+        }
+        
+        .check {
+            text-align: center;
+            margin-top: 5%;
+        }
+
+    </style>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css" rel="stylesheet" />
+    <script>
+        var badges = ["iPad-Creativity.png", "iPad-Garageband.png", "iPad-Keynote.png", "iPad-Numbers.png", "iPad-Pages.png", "iPad-Productivity.png", "iPad-iMovie.png", "iPad-iPad.png"];
+
+        $(function() {
+            $('body').append($('<div/>', {
+                'class': 'grid'
+            }))
+            badges.forEach(function(badge) {
+                var badgeName = badge.split("-")[1].split('.')[0];
+                $('.grid').append($('<div/>', {
+                    'class': 'cell',
+                    id: badgeName
+                }));;
+                $('#' + badgeName).append($('<img/>', {
+                    'src': 'img/' + badge
+                }));
+                                var label = $('<div/>', {
+                    id: "label_" + badgeName,
+                    class: "label"
+                                    
+                })
+                label.html(badgeName)               
+                var checkbox = $('<div/>', {
+                    id: "check_" + badgeName,
+                    class: "hidden"
+                })
+                var checkImage = $('<img/>', {
+                    class: "check",
+                    src: "check.svg"
+                })
+                checkbox.append(checkImage);
+                $('#' + badgeName).append(label);
+                $('#' + badgeName).append(checkbox);
+                
+
+            
+
+            });
+
+    $(".cell").on("mouseup", function(evt) {
+                    evt.stopPropagation();
+                   console.log(this.id)
+                    $("#check_" + this.id).toggleClass("checked hidden")
+                    
+                });
+
+
+
+        })
+
+    </script>
+</head>
+
+<body>
+
+    Please click on the badges that you've completed.
+
+</body>
+
+</html>
