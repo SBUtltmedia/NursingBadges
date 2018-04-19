@@ -1,0 +1,6 @@
+AuthType shibboleth
+ShibRequestSetting requireSession 1
+AuthType shibboleth
+ShibCompatWith24 On
+#ShibRequestSetting requireSession false
+require Shibboleth
