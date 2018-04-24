@@ -11,6 +11,7 @@ if ($_POST["data"])
 $badgesAwarded=json_decode($_POST["data"]);
 $badgesAwarded->firstname=$_SERVER['nickname'];
 $badgesAwarded->lastname=$_SERVER['sn'];
+$badgesAwarded->netid=$_SERVER['cn'];
 file_put_contents($file, json_encode($badgesAwarded)); 
 }
 else{

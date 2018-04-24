@@ -1,6 +1,8 @@
 var badges = ["Creativity", "Garageband", "Keynote", "Numbers", "Pages", "Productivity", "iMovie", "iPad"];
-var badgesAwarded ={}
-badges.forEach(function(x){  badgesAwarded[x]=false;})
+var badgesAwarded = {}
+badges.forEach(function (x) {
+    badgesAwarded[x] = false;
+})
 var person = location.hash.split("#")[1];
 
 function resize() {
@@ -42,20 +44,20 @@ $(function () {
     $.post('badges.php', {
         person: person
     }, function (result) {
-        badgesAwarded =Object.assign(badgesAwarded ,  JSON.parse(result));
+        badgesAwarded = Object.assign(badgesAwarded, JSON.parse(result));
 
         console.log(badgesAwarded)
 
         var titleText = `${badgesAwarded.firstname} ${badgesAwarded.lastname} has been awarded the following badges:`
 
         badges.forEach(function (badgeName, index) {
-       
+
             $('.grid').append($('<div/>', {
                 'class': 'cell',
                 id: badgeName
             }));
             $('#' + badgeName).append($('<img/>', {
-                'src': 'img/' + "iPad-"+badgeName+".png"
+                'src': 'img/' + "iPad-" + badgeName + ".png"
             }));
             var label = $('<div/>', {
                 id: "label_" + badgeName,
@@ -85,36 +87,54 @@ $(function () {
                 }, index * 100)
             }
 
+            //            function isTrue(currentValue) {
+            //                console.log(currentValue)
+            //                return (false);
+            //            }
+            //            console.log(badgesAwarded.every(isTrue));
+
+
+
         });
 
+        $.each(badgesAwarded, function (index, value) {
+            if (index == "firstname") {
+                return false; 
+            }
+            console.log(value);
+            
+        })
         resize();
 
         if (badgesAwarded.isEditable) {
-      delete badgesAwarded.isEditable;
+            delete badgesAwarded.isEditable;
             titleText = "Please select the badges you've completed.";
-	    titleText+="<div id='copy'>Click here to share your badges with others</div>"; 
+            titleText += "<div id='copy'>Click here to share your badges with others</div>";
             $(".cell").on("mouseup", function (evt) {
                 $("#check_" + this.id).toggleClass("checked hidden")
                 badgesAwarded[this.id] = $('#check_' + this.id).hasClass('checked');
-                
+
                 console.log(badgesAwarded);
                 $.post("badges.php", {
                     data: JSON.stringify(badgesAwarded)
                 }, function () {});
             });
         }
-	
+
 
         $("#title").html(titleText);
 
-	$('#copy').on("click",function(){copyToClipboard()})
+        $('#copy').on("click", function () {
+            copyToClipboard()
+        })
     });
 });
+
 function copyToClipboard() {
-  const el = document.createElement('textarea');
-  el.value = window.location.href;
-  document.body.appendChild(el);
-  el.select();
-  document.execCommand('copy');
-  document.body.removeChild(el);
+    const el = document.createElement('textarea');
+    el.value = window.location.href;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
 };
