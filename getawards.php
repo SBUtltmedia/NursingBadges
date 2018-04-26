@@ -10,12 +10,15 @@ $scores= array();
 
 
 
-$headerRaw = (array) json_decode(file_get_contents($files[0]));
-$header =array_keys($headerRaw);
-$headerString = implode(",",$header);
-//print $headerString;
+$header = json_decode(file_get_contents($files[0]));
+$headerMerged= (object) array_merge((array) $header->badgesAwarded, (array) $header->info);
+//print_r((array) $headerMerged);
+$headerKeys=array_keys((array) $headerMerged);
+$headerString = implode(",",$headerKeys);
 print $headerString;
+//print $headerString;
     print"\n";
+
 foreach ($files as $file){
     #print $file;
     #$contents = json_decode(file_get_contents($file));
@@ -23,27 +26,15 @@ foreach ($files as $file){
     #print_r($contents);
     
     //print $file;
-    $filetext = (array) json_decode((file_get_contents($file)));
-    $filetextHeader = array_values($filetext);
-    $filetextString = implode(",", $filetextHeader);
-    //print $filetext;
-//    
-//    print "\n";
-//    nl2br();
-    $filetextData = list($a, $b, $c, $d, $e, $f, $g, $h, $i, $j) = explode(",", $filetextString);
-//    print $i;
-    
-    foreach ($header as $key){
-        print_r($filetext[$key].",");
-    }
-    print"\n";
-    //foreach ($filetext as $text)
-        //print $text;
-                                    
+    $filetext =  json_decode((file_get_contents($file))); 
+    $rowMerged= (object) array_merge((array) $filetext->badgesAwarded, (array) $filetext->info);
+    foreach($headerMerged as $key => $value) {
+print $rowMerged->$key.",";
+}
+print"\n";
+}
    
     
-}
-
 
 
 ?>

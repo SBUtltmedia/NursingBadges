@@ -3,7 +3,9 @@ var badgesAwarded = {}
 badges.forEach(function (x) {
     badgesAwarded[x] = false;
 })
-var person = location.hash.split("#")[1];
+var netid = location.hash.split("#")[1];
+var badgeCount = 0;
+var person;
 
 function resize() {
     var targetWidth = 16;
@@ -42,13 +44,16 @@ $(function () {
         'class': 'grid'
     }))
     $.post('badges.php', {
-        person: person
+        netid: netid
     }, function (result) {
-        badgesAwarded = Object.assign(badgesAwarded, JSON.parse(result));
+        var resultJSON = JSON.parse(result)
+        badgesAwarded = Object.assign(badgesAwarded, resultJSON.badgesAwarded);
 
+        badgesAwarded
+        person = resultJSON.info || {}
         console.log(badgesAwarded)
 
-        var titleText = `${badgesAwarded.firstname} ${badgesAwarded.lastname} has been awarded the following badges:`
+        var titleText = `${person.firstname} ${person.lastname} has been awarded the following badges:`
 
         badges.forEach(function (badgeName, index) {
 
@@ -80,13 +85,13 @@ $(function () {
             checkboxHolder.append(checkbox);
             $('#' + badgeName).append(label);
             $('#' + badgeName).append(checkboxHolder);
-            console.log();
+
             if (badgesAwarded[badgeName]) {
                 setTimeout(function () {
                     $("#check_" + badgeName).toggleClass("checked hidden")
                 }, index * 100)
             }
-
+            setTimeout(checkWinner, 1000)
             //            function isTrue(currentValue) {
             //                console.log(currentValue)
             //                return (false);
@@ -96,25 +101,27 @@ $(function () {
 
 
         });
-
-        $.each(badgesAwarded, function (index, value) {
-            if (index == "firstname") {
-                return false; 
-            }
-            console.log(value);
-            
-        })
         resize();
-
-        if (badgesAwarded.isEditable) {
-            delete badgesAwarded.isEditable;
+        if (person.canEdit) {
             titleText = "Please select the badges you've completed.";
             titleText += "<div id='copy'>Click here to share your badges with others</div>";
-            $(".cell").on("mouseup", function (evt) {
+            $(".cell").on("click touchstart", function (evt) {
+                if (event.handled === false) return
+                event.stopPropagation();
+                event.preventDefault();
+                event.handled = true;
+
                 $("#check_" + this.id).toggleClass("checked hidden")
                 badgesAwarded[this.id] = $('#check_' + this.id).hasClass('checked');
+                if (badgesAwarded[this.id]) {
+                    badgeCount++;
+                }
+                checkWinner();
+                console.log(Object.values(badgesAwarded).every(function (item) {
+                    
+                    return item;
+                }))
 
-                console.log(badgesAwarded);
                 $.post("badges.php", {
                     data: JSON.stringify(badgesAwarded)
                 }, function () {});
@@ -124,7 +131,7 @@ $(function () {
 
         $("#title").html(titleText);
 
-        $('#copy').on("click", function () {
+        $('#copy').on("touchstart click", function () {
             copyToClipboard()
         })
     });
@@ -137,4 +144,25 @@ function copyToClipboard() {
     el.select();
     document.execCommand('copy');
     document.body.removeChild(el);
-};
+}
+
+
+function checkWinner() {
+    if (Object.values(badgesAwarded).every(function (item) {
+            return item
+        })) {
+        $('#winner').css("visibility", "visible").animate({
+            opacity: 1
+        }, 1000, function () {
+            $('#winnerImage').addClass("won")
+        });
+        $('#winner').on("touchstart click", function () {
+            if (event.handled === false) return
+            event.stopPropagation();
+            event.preventDefault();
+            event.handled = true;
+            $(this).css("visibility", "hidden")
+            $('#winnerImage').removeClass("won")
+        })
+    }
+}

@@ -1,168 +1,201 @@
-<style > body {
-    font-family: Avenir;
-    color: #777777;
-    font-weight: bold;
-    font-size: 1.2rem;
-}
+ html, body {
+     font-family: Avenir;
+     color: #777777;
+     font-weight: bold;
+     font-size: 1.2rem;
+     height: 100%;
+ }
 
-#holder {
-    font-family: Avenir;
-    color: #777777;
-    font-weight: bold;
-    font-size: 1.2rem;
-    position: absolute;
-   
-}
+ #holder {
+     font-family: Avenir;
+     color: #777777;
+     font-weight: bold;
+     font-size: 1.2rem;
+     position: absolute;
+     align-items: center;
+     display: flex;
+     flex-direction: column;
+ }
 
-#title {
-    text-align: center;
-    background-color: #666666;
-    margin-bottom: 10%;
-    height: 0;
-    position: relative;
-    font-size: 2.2rem;
-    width: 80%;
-}
+ #title {
+     text-align: center;
+     background-color: #666666;
+     margin-bottom: 10%;
+     height: 0;
+     position: relative;
+     font-size: 2.2rem;
+     width: 80%;
+ }
 
-@font-face {
-    font-family: Avenir;
-    src: url(Avenir.otf);
-}
+ @font-face {
+     font-family: Avenir;
+     src: url(Avenir.otf);
+ }
 
-.grid {
-    display: flex;
-    /* establish flex container */
-    flex-wrap: wrap;
-    /* enable flex items to wrap */
-    justify-content: space-around;
-    height: 20%;
-    width: 80%;
-    align-content: center margin: auto;
-}
+ .grid,
+ #winner {
 
-.label,
-.cell {
-    text-align: center;
-}
+     display: flex;
+     /* establish flex container */
+     flex-wrap: wrap;
+     /* enable flex items to wrap */
+     justify-content: space-around;
+     height: 20%;
+     width: 80%;
+     align-content: center margin: auto;
+ }
 
-.cell {
-    flex: 0 0 23%;
-    /* don't grow, don't shrink, width */
-    margin-bottom: 5px;
-}
+ .label,
+ .cell {
+     text-align: center;
+ }
 
-.cell img {
-    width: 80%;
-}
+ .cell {
+     flex: 0 0 23%;
+     /* don't grow, don't shrink, width */
+     margin-bottom: 5px;
+ }
 
-div .check {
-    width: 90%;
-    height: 90%;
-}
+ .cell img {
+     width: 80%;
+ }
 
-@keyframes tada {
-    0% {
-        -webkit-animation-timing-function: ease-in;
-        animation-timing-function: ease-in;
-        opacity: 0;
-        -webkit-transform: scale(1);
-        transform: scale(1);
-    }
-    38% {
-        -webkit-animation-timing-function: ease-out;
-        animation-timing-function: ease-out;
-        opacity: 1;
-        -webkit-transform: scale(1);
-        transform: scale(1);
-    }
-    55% {
-        -webkit-animation-timing-function: ease-in;
-        animation-timing-function: ease-in;
-        -webkit-transform: scale(1.5);
-        transform: scale(1.5);
-    }
-    72% {
-        -webkit-animation-timing-function: ease-out;
-        animation-timing-function: ease-out;
-        -webkit-transform: scale(1);
-        transform: scale(1);
-    }
-    81% {
-        -webkit-animation-timing-function: ease-in;
-        animation-timing-function: ease-in;
-        -webkit-transform: scale(1.24);
-        transform: scale(1.24);
-    }
-    89% {
-        -webkit-animation-timing-function: ease-out;
-        animation-timing-function: ease-out;
-        -webkit-transform: scale(1);
-        transform: scale(1);
-    }
-    95% {
-        -webkit-animation-timing-function: ease-in;
-        animation-timing-function: ease-in;
-        -webkit-transform: scale(1.04);
-        transform: scale(1.04);
-    }
-    100% {
-        -webkit-animation-timing-function: ease-out;
-        animation-timing-function: ease-out;
-        -webkit-transform: scale(1);
-        transform: scale(1);
-    }
-}
+ div .check {
+     width: 90%;
+     height: 90%;
+ }
 
-.checked {
-    animation: tada 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1 alternate;
-}
 
-.hidden {
+ @keyframes won {
+     0% {
+         transform: scale(1) rotate(0deg);
+     }
+     25% {
+         transform: scale(1.2) rotate(-2deg);
+     }
+     50% {
+         transform: scale(1) rotate(0deg);
+     }
 
-    opacity: 0;
+     75% {
+         transform: scale(1.2) rotate(2deg);
+     }
+     100% {
+         transform: scale(1) rotate(0deg);
+     }
 
-}
 
-.checkboxHolder {
 
-    width: 20%;
-    height: 20%;
-    margin-left: 40%;
-    margin-right: 40%;
-    margin-top: 10%;
-}
+ }
 
-.check {
-    text-align: center;
+ @keyframes tada {
+     0% {
+         -webkit-animation-timing-function: ease-in;
+         animation-timing-function: ease-in;
+         opacity: 0;
+         -webkit-transform: scale(1);
+         transform: scale(1);
+     }
+     38% {
+         -webkit-animation-timing-function: ease-out;
+         animation-timing-function: ease-out;
+         opacity: 1;
+         -webkit-transform: scale(1);
+         transform: scale(1);
+     }
+     55% {
+         -webkit-animation-timing-function: ease-in;
+         animation-timing-function: ease-in;
+         -webkit-transform: scale(1.5);
+         transform: scale(1.5);
+     }
+     72% {
+         -webkit-animation-timing-function: ease-out;
+         animation-timing-function: ease-out;
+         -webkit-transform: scale(1);
+         transform: scale(1);
+     }
+     81% {
+         -webkit-animation-timing-function: ease-in;
+         animation-timing-function: ease-in;
+         -webkit-transform: scale(1.24);
+         transform: scale(1.24);
+     }
+     89% {
+         -webkit-animation-timing-function: ease-out;
+         animation-timing-function: ease-out;
+         -webkit-transform: scale(1);
+         transform: scale(1);
+     }
+     95% {
+         -webkit-animation-timing-function: ease-in;
+         animation-timing-function: ease-in;
+         -webkit-transform: scale(1.04);
+         transform: scale(1.04);
+     }
+     100% {
+         -webkit-animation-timing-function: ease-out;
+         animation-timing-function: ease-out;
+         -webkit-transform: scale(1);
+         transform: scale(1);
+     }
+ }
 
-}
+ .checked {
+     animation: tada 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1 alternate;
+ }
 
-#winner {
-    visibility:hidden;
-    z-index:100;
-    left:0;
-    top:0;
-    background-color:white;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-}
+ .won {
+     animation: won 0.7s 1;
+ }
 
-#winnerTitle {
-    text-align: center;
-    background-color: #666666;
-    margin-bottom: 10%;
-    height: 0;
-    position: relative;
-    font-size: 2.2rem;
-    width: 80%;
-}
+ .hidden {
 
-#winnerImage {
-    width: 50%;
-    height: 50%;
-    position: absolute;
-    padding-left: 10%;
-}
+     opacity: 0;
 
-</style >
+ }
+
+ .checkboxHolder {
+
+     width: 20%;
+     height: 20%;
+     margin-left: 40%;
+     margin-right: 40%;
+     margin-top: 5%;
+ }
+
+ .check {
+     text-align: center;
+
+ }
+
+ #winner {
+     visibility: hidden;
+     opacity: 0;
+     z-index: 100;
+     left: 0;
+     top: 0;
+     background-color: white;
+     position: absolute;
+     width: 100%;
+     height: 100%;
+ }
+
+ #winnerTitle {
+     text-align: center;
+     background-color: #666666;
+     margin-bottom: 10%;
+     height: 0;
+     position: relative;
+     font-size: 2.2rem;
+     width: 100%;
+ }
+
+ #winnerImage {
+     width: 50%;
+     height: 50%;
+     top: 10%;
+     position: absolute;
+ }
+
+ </style >
