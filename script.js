@@ -8,37 +8,93 @@ var badgeCount = 0;
 var person;
 
 function resize() {
-    var targetWidth = 16;
+    var targetWidth =12; 
     var targetHeight = 9;
     var w = $(window).width();
     var h = $(window).height();
-    // If the aspect ratio is greater than or equal to 4:3, fix height and set width based on height
-    if ((w / h) >= targetWidth / targetHeight) {
-        stageHeight = h;
-        stageWidth = (targetWidth / targetHeight) * h;
-        stageLeft = (w - stageWidth) / 2;
-        stageTop = 0;
-        //$("#title").css("font-size", 1.2 * (x / y) + "rem")
-    } else {
-        stageWidth = w;
-        stageHeight = (targetHeight / targetWidth) * w;
-        stageTop = (h - stageHeight) / 2;
-        stageLeft = 0;
-    }
-    $("#holder").css({
-        width: stageWidth + "px",
-        height: stageHeight + "px",
-        left: stageLeft + "px",
-        top: stageTop + "px"
-    });
-    $("html").css("font-size", (stageHeight / 60) + "px");
+    $("html").css("font-size", (w / 60) + "px");
     $("title").html();
 
 }
 
 
+function getLeaders(){
+
+$.get('getawards.php',function(result){
+
+var board = $.csv.toObjects(result);
+console.log(board)
+var table=$('<table/>')
+for (i in board) {
+count=0;
+for (j in board[i]) if (board[i][j]==1) count++;
+board[i].total=count
+}
+board = board.slice(0).sort(function(a,b) {
+    return b.total - a.total;
+});
+
+
+
+for (i in board){
+var row=$('<tr/>')
+
+var td=$('<td/>')
+if(board[i].total==8){
+var winner= $('<img/>',{"src":"winner.svg","class":"leadWinner won"});
+td.append(winner)
+}
+row.append(td)
+var name= ["firstname"];
+name.forEach(function(val){
+var td=$('<td/>')
+td.append(board[i][val]+" "+board[i]["lastname"] );
+row.append(td)
+});
+
+badges.forEach(function(val){
+var td=$('<td/>')
+if(board[i][val]==1)
+{
+var badge= $('<img/>',{"src":"img/iPad-"+val+'.png',class:"badge"});
+td.append(badge)
+}
+row.append(td)
+});
+
+table.append(row);
+
+}
+
+var back="<div id='back'>&#9166;</div>";
+$('#leader').append(back);
+
+$('#leader').append(table);
+
+
+$('#leader').css({visibility:"visible",opacity:1})
+
+               $("#back").on("click touchstart", function (evt) {
+                if (event.handled === false) return
+                event.stopPropagation();
+                event.preventDefault();
+                event.handled = true;
+                $('#leader').html("");
+                $('#leader').css({visibility:"hidden",opacity:0})
+})
+
+
+});
+
+
+}
+
+
+
+
 $(function () {
-    $(window).on('resize', resize);
+
+   $(window).on('resize', resize);
     $('body').append($('#holder'))
     $('#holder').append($('<div/>', {
         'class': 'grid'
@@ -104,7 +160,6 @@ $(function () {
         resize();
         if (person.canEdit) {
             titleText = "Please select the badges you've completed.";
-            titleText += "<div id='copy'>Click here to share your badges with others</div>";
             $(".cell").on("click touchstart", function (evt) {
                 if (event.handled === false) return
                 event.stopPropagation();
@@ -126,25 +181,21 @@ $(function () {
                     data: JSON.stringify(badgesAwarded)
                 }, function () {});
             });
-        }
+   }
 
 
         $("#title").html(titleText);
+               $("#trophy").on("click touchstart", function (evt) {
+                if (event.handled === false) return
+                event.stopPropagation();
+                event.preventDefault();
+                event.handled = true;
+        getLeaders()
+})
 
-        $('#copy').on("touchstart click", function () {
-            copyToClipboard()
-        })
     });
 });
 
-function copyToClipboard() {
-    const el = document.createElement('textarea');
-    el.value = window.location.href;
-    document.body.appendChild(el);
-    el.select();
-    document.execCommand('copy');
-    document.body.removeChild(el);
-}
 
 
 function checkWinner() {

@@ -1,0 +1,26 @@
+
+<script
+  src="//code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
+
+<script src="jquery.csv.js"></script>
+
+<script>
+
+$.get('getawards.php',function(result){
+
+var board = $.csv.toObjects(result);
+for (i in board){
+
+var count = 0;
+for (j in board[i]) if (board[i][j]==1) count++;
+console.log(count)
+}
+
+
+})
+
+
+
+</script>
